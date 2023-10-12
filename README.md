@@ -51,17 +51,81 @@ Personalize este modelo de acordo com as necessidades específicas do seu projet
 
 # Controlador do Estudante (StudentController)
 
-Este é um exemplo de um controlador Laravel chamado `StudentController` que gerencia operações relacionadas a estudantes em uma API. Este controlador permite a criação, recuperação, atualização e exclusão de registros de estudantes no banco de dados. Aqui estão algumas das principais funções que este controlador executa:
+Aqui estão detalhes sobre cada um dos métodos no `StudentController`:
+
+## `index()`
 
 - `index()`: Recupera todos os estudantes no banco de dados e retorna uma resposta JSON contendo a lista de estudantes.
 
+```sh
+public function index(){
+    $students= Student::all();
+    return response()->json([
+        'status'=> 200,
+        'students'=>$students,
+    ]);
+}
+```
+
 - `store(Request $request)`: Cria um novo registro de estudante com base nos dados recebidos da solicitação HTTP POST.
 
+```sh
+public function store(Request $request)
+{
+    $student = new Student;
+    $student->name= $request->input('name');
+    $student->course= $request->input('course');
+    $student->email= $request->input('email');
+    $student->phone= $request->input('phone');
+    $student->save();
+
+    return response()->json([
+        'status'=> 200,
+        'message'=>'Student Added Successfully',
+    ]);
+}
+```
+
 - `edit($id)`: Recupera um estudante específico com base em seu ID.
+```sh
+public function edit($id){
+    $student= Student::find($id);
+    return response()->json([
+        'status'=> 200,
+        'student'=>$student,
+    ]);
+}
+```
 
 - `update(Request $request, $id)`: Atualiza as informações de um estudante com base no ID fornecido e nos dados recebidos da solicitação HTTP PUT.
+```sh
+public function update(Request $request, $id){
+    $student= Student::find($id);
+    $student->name= $request->input('name');
+    $student->course= $request->input('course');
+    $student->email= $request->input('email');
+    $student->phone= $request->input('phone');
+    $student->update();
+    return response()->json([
+        'status'=> 200,
+        'message'=>'student modified',
+    ]);
+}
+```
 
 - `destroy($id)`: Exclui um estudante com base em seu ID.
+```sh
+public function destroy($id){
+    $student= Student::find($id);
+    $student->delete();
+
+    return response()->json([
+        'status'=> 200,
+        'message'=>'student Deleted Successfully',
+    ]);
+}
+```
+
 
 Este controlador faz parte de um projeto Laravel, onde o modelo `Student` é usado para interagir com os dados dos estudantes no banco de dados. Certifique-se de que as rotas apropriadas sejam definidas para cada um desses métodos no arquivo `routes/api.php`.
 
